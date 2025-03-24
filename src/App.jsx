@@ -6,20 +6,49 @@ const escenarios = [
     id: 1,
     titulo: "Sepsis pediátrica",
     descripcion: "Niño de 4 años con fiebre alta, petequias, dificultad respiratoria y signos de shock.",
-  },
-  {
-    id: 2,
-    titulo: "Convulsión febril",
-    descripcion: "Niña de 2 años con convulsión tónico-clónica tras cuadro febril.",
-  },
+    preguntas: {
+      Médico: {
+        texto: "¿Cuál es la conducta más adecuada ante este cuadro?",
+        opciones: [
+          "Administrar antitérmicos y observar",
+          "Iniciar soporte vital, antibioterapia y volumen intravenoso",
+          "Esperar resultados de laboratorio",
+          "Derivar al centro de salud"
+        ],
+        correcta: 1
+      },
+      Enfermero: {
+        texto: "¿Cómo prepararías la medicación antibótica para este paciente?",
+        opciones: [
+          "Disolver en 100 mL de suero glucosado y administrar en bolo",
+          "Diluir en suero fisiológico y administrar en perfusión lenta",
+          "No es necesario diluir, administrar directamente",
+          "Preparar en jeringa y administrar IM"
+        ],
+        correcta: 1
+      },
+      Farmacéutico: {
+        texto: "¿Cuál de estos aspectos es crítico para el antibiótico en sepsis pediátrica?",
+        opciones: [
+          "Compatibilidad con calcio en la línea venosa",
+          "Dosis exacta por kg, dilución y tiempo de administración",
+          "Refrigeración previa a su uso",
+          "Administrarlo junto a corticoides siempre"
+        ],
+        correcta: 1
+      }
+    }
+  }
 ];
 
 export default function SimuPedApp() {
   const [fase, setFase] = useState("inicio");
   const [rol, setRol] = useState("");
   const [escenario, setEscenario] = useState(null);
+  const [respuesta, setRespuesta] = useState(null);
 
   const volver = () => {
+    setRespuesta(null);
     if (fase === "rol") setFase("inicio");
     else if (fase === "escenario") setFase("rol");
     else if (fase === "simulacion") setFase("escenario");
@@ -107,15 +136,25 @@ export default function SimuPedApp() {
             <h2 className="text-2xl font-semibold text-blue-900 text-center">{escenario.titulo}</h2>
             <p className="text-gray-700 text-center">{escenario.descripcion}</p>
             <div className="bg-blue-50 p-6 rounded-xl mt-4">
-              <p className="mb-3">
-                Pregunta para el rol <strong>{rol}</strong>:
-              </p>
-              <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                <li>Oxigenoterapia con mascarilla con reservorio</li>
-                <li>Canalización de vía periférica e inicio de volumen</li>
-                <li>Solicitar analítica y hemocultivo</li>
-                <li>Solicitar radiografía de tórax</li>
-                <li>Iniciar antibioterapia empírica EV</li>
+              <p className="mb-3 font-medium">Pregunta para <strong>{rol}</strong>:</p>
+              <p className="mb-4">{escenario.preguntas[rol].texto}</p>
+              <ul className="space-y-2">
+                {escenario.preguntas[rol].opciones.map((op, idx) => (
+                  <li key={idx}>
+                    <button
+                      onClick={() => setRespuesta(idx)}
+                      className={`w-full text-left px-4 py-2 rounded-lg border transition ${
+                        respuesta === idx
+                          ? idx === escenario.preguntas[rol].correcta
+                            ? "bg-green-200 border-green-500"
+                            : "bg-red-200 border-red-500"
+                          : "bg-white hover:bg-blue-100 border-gray-300"
+                      }`}
+                    >
+                      {op}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="text-center">
