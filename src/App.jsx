@@ -18,7 +18,7 @@ const escenarios = [
         correcta: 1
       },
       Enfermero: {
-        texto: "¿Cómo prepararías la medicación antibótica para este paciente?",
+        texto: "¿Cómo prepararías la medicación antibiótica para este paciente?",
         opciones: [
           "Disolver en 100 mL de suero glucosado y administrar en bolo",
           "Diluir en suero fisiológico y administrar en perfusión lenta",
@@ -70,14 +70,19 @@ export default function SimuPedApp() {
         <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
 
         {fase === "inicio" && (
-          <div className="text-center">
-            <button
-              onClick={iniciar}
-              className="bg-blue-600 text-white px-8 py-4 rounded-xl text-xl font-semibold hover:bg-blue-700 transition"
-            >
-              Iniciar Simulación
-            </button>
-          </div>
+          <>
+            <div className="text-center">
+              <button
+                onClick={iniciar}
+                className="bg-blue-600 text-white px-8 py-4 rounded-xl text-xl font-semibold hover:bg-blue-700 transition"
+              >
+                Iniciar Simulación
+              </button>
+            </div>
+            <p className="text-xs italic text-center text-gray-500 mt-8">
+              Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI Pediátrica de la AGC de la Infancia y Adolescencia en contexto del proyecto FHARMACHALLENGE.
+            </p>
+          </>
         )}
 
         {fase === "rol" && (
