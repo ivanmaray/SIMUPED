@@ -47,7 +47,10 @@ export default function SimuPedApp() {
   };
 
   const registrarRespuesta = (idx) => {
-    const correcta = idx === escenario.preguntas[rol].correcta;
+    const pregunta = Array.isArray(escenario.preguntas[rol])
+      ? escenario.preguntas[rol][0]
+      : escenario.preguntas[rol];
+    const correcta = idx === pregunta.correcta;
     setRespuesta(idx);
     setResultados((prev) => {
       const nuevosResultados = [
@@ -56,10 +59,10 @@ export default function SimuPedApp() {
           escenario: escenario.titulo,
           correcta,
           seleccion: idx,
-          correctaIdx: escenario.preguntas[rol].correcta,
-          explicacion: escenario.preguntas[rol].explicacion,
-          opciones: escenario.preguntas[rol].opciones,
-          pregunta: escenario.preguntas[rol].texto,
+          correctaIdx: pregunta.correcta,
+          explicacion: pregunta.explicacion,
+          opciones: pregunta.opciones,
+          pregunta: pregunta.texto,
         },
       ];
       setTimeout(() => {
@@ -165,38 +168,45 @@ export default function SimuPedApp() {
             )}
 
             {fase === "simulacion" && escenario && (
-              <>
-                <h2 className="text-2xl font-semibold text-blue-900 text-center">{escenario.titulo}</h2>
-                <p className="text-gray-700 text-center">{escenario.descripcion}</p>
-                <div className="bg-blue-50 p-6 rounded-xl mt-4">
-                  <p className="mb-3 font-medium">Pregunta para <strong>{rol}</strong>:</p>
-                  <p className="mb-4">{escenario.preguntas[rol].texto}</p>
-                  <ul className="space-y-2">
-                    {escenario.preguntas[rol].opciones.map((op, idx) => (
-                      <li key={idx}>
-                        <button
-                          onClick={() => registrarRespuesta(idx)}
-                          disabled={respuesta !== null}
-                          className={`w-full text-left px-4 py-2 rounded-lg border transition ${
-                            respuesta === idx
-                              ? idx === escenario.preguntas[rol].correcta
-                                ? "bg-green-200 border-green-500"
-                                : "bg-red-200 border-red-500"
-                              : "bg-white hover:bg-blue-100 border-gray-300"
-                          }`}
-                        >
-                          {op}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  {respuesta !== null && (
-                    <p className="mt-4 text-sm italic text-gray-600">
-                      {escenario.preguntas[rol].explicacion}
-                    </p>
-                  )}
-                </div>
-              </>
+              (() => {
+                const pregunta = Array.isArray(escenario.preguntas[rol])
+                  ? escenario.preguntas[rol][0]
+                  : escenario.preguntas[rol];
+                return (
+                  <>
+                    <h2 className="text-2xl font-semibold text-blue-900 text-center">{escenario.titulo}</h2>
+                    <p className="text-gray-700 text-center">{escenario.descripcion}</p>
+                    <div className="bg-blue-50 p-6 rounded-xl mt-4">
+                      <p className="mb-3 font-medium">Pregunta para <strong>{rol}</strong>:</p>
+                      <p className="mb-4">{pregunta.texto}</p>
+                      <ul className="space-y-2">
+                        {pregunta.opciones.map((op, idx) => (
+                          <li key={idx}>
+                            <button
+                              onClick={() => registrarRespuesta(idx)}
+                              disabled={respuesta !== null}
+                              className={`w-full text-left px-4 py-2 rounded-lg border transition ${
+                                respuesta === idx
+                                  ? idx === pregunta.correcta
+                                    ? "bg-green-200 border-green-500"
+                                    : "bg-red-200 border-red-500"
+                                  : "bg-white hover:bg-blue-100 border-gray-300"
+                              }`}
+                            >
+                              {op}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                      {respuesta !== null && (
+                        <p className="mt-4 text-sm italic text-gray-600">
+                          {pregunta.explicacion}
+                        </p>
+                      )}
+                    </div>
+                  </>
+                );
+              })()
             )}
 
             {fase === "final" && (
