@@ -38,6 +38,43 @@ const escenarios = [
         correcta: 1
       }
     }
+  },
+  {
+    id: 2,
+    titulo: "Convulsión febril",
+    descripcion: "Niño de 2 años con fiebre y convulsión tónica-clónica de 2 minutos de duración.",
+    preguntas: {
+      Médico: {
+        texto: "¿Qué medida inicial es más adecuada?",
+        opciones: [
+          "Administrar antipirético oral",
+          "Colocar en posición lateral de seguridad y monitorizar",
+          "Iniciar antibioterapia de amplio espectro",
+          "Realizar punción lumbar urgente"
+        ],
+        correcta: 1
+      },
+      Enfermero: {
+        texto: "¿Qué debe preparar la enfermería durante la convulsión?",
+        opciones: [
+          "Monitorización, canalización IV y medicación anticonvulsiva",
+          "Administrar antipirético por vía oral",
+          "Retirar al paciente de la habitación",
+          "Poner oxígeno a 15 L/min sin mascarilla"
+        ],
+        correcta: 0
+      },
+      Farmacéutico: {
+        texto: "¿Cuál es el tratamiento farmacológico de elección en convulsión febril prolongada?",
+        opciones: [
+          "Levetiracetam IV",
+          "Diazepam rectal o midazolam bucal",
+          "Paracetamol IV",
+          "Fenitoína oral"
+        ],
+        correcta: 1
+      }
+    }
   }
 ];
 
@@ -46,6 +83,8 @@ export default function SimuPedApp() {
   const [rol, setRol] = useState("");
   const [escenario, setEscenario] = useState(null);
   const [respuesta, setRespuesta] = useState(null);
+  const [resultados, setResultados] = useState([]);
+  const [finalizado, setFinalizado] = useState(false);
 
   const volver = () => {
     setRespuesta(null);
@@ -54,35 +93,56 @@ export default function SimuPedApp() {
     else if (fase === "simulacion") setFase("escenario");
   };
 
-  const iniciar = () => setFase("rol");
+  const iniciar = () => {
+    setResultados([]);
+    setFinalizado(false);
+    setFase("rol");
+  };
   const elegirRol = (r) => {
     setRol(r);
     setFase("escenario");
   };
   const elegirEscenario = (e) => {
     setEscenario(e);
+    setRespuesta(null);
     setFase("simulacion");
   };
 
+  const registrarRespuesta = (idx) => {
+    const correcta = idx === escenario.preguntas[rol].correcta;
+    setRespuesta(idx);
+    setResultados((prev) => [
+      ...prev,
+      { escenario: escenario.titulo, correcta }
+    ]);
+    setTimeout(() => {
+      const siguiente = escenarios.find((e) => e.id !== escenario.id);
+      if (siguiente) {
+        setEscenario(siguiente);
+        setRespuesta(null);
+      } else {
+        setFase("final");
+        setFinalizado(true);
+      }
+    }, 2000);
+  };
+
+  const totalCorrectas = resultados.filter((r) => r.correcta).length;
+
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6 flex items-center justify-center">
-      <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl p-8 space-y-8">
+    <div className="min-h-screen bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6 flex flex-col justify-between">
+      <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
         <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
 
         {fase === "inicio" && (
-          <>
-            <div className="text-center">
-              <button
-                onClick={iniciar}
-                className="bg-blue-600 text-white px-8 py-4 rounded-xl text-xl font-semibold hover:bg-blue-700 transition"
-              >
-                Iniciar Simulación
-              </button>
-            </div>
-            <p className="text-xs italic text-center text-gray-500 mt-8">
-              Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI Pediátrica de la AGC de la Infancia y Adolescencia en contexto del proyecto FHARMACHALLENGE.
-            </p>
-          </>
+          <div className="text-center">
+            <button
+              onClick={iniciar}
+              className="bg-blue-600 text-white px-8 py-4 rounded-xl text-xl font-semibold hover:bg-blue-700 transition"
+            >
+              Iniciar Simulación
+            </button>
+          </div>
         )}
 
         {fase === "rol" && (
@@ -110,32 +170,6 @@ export default function SimuPedApp() {
           </>
         )}
 
-        {fase === "escenario" && (
-          <>
-            <h2 className="text-2xl font-semibold text-gray-700 text-center">Selecciona un escenario</h2>
-            <div className="space-y-4">
-              {escenarios.map((e) => (
-                <div
-                  key={e.id}
-                  onClick={() => elegirEscenario(e)}
-                  className="border border-gray-200 rounded-xl p-6 cursor-pointer hover:bg-blue-50 transition shadow-sm"
-                >
-                  <h3 className="text-lg font-bold text-blue-800">{e.titulo}</h3>
-                  <p className="text-gray-600">{e.descripcion}</p>
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <button
-                onClick={volver}
-                className="mt-6 text-sm text-gray-500 hover:text-gray-700 underline"
-              >
-                ← Volver a selección de rol
-              </button>
-            </div>
-          </>
-        )}
-
         {fase === "simulacion" && escenario && (
           <>
             <h2 className="text-2xl font-semibold text-blue-900 text-center">{escenario.titulo}</h2>
@@ -147,7 +181,8 @@ export default function SimuPedApp() {
                 {escenario.preguntas[rol].opciones.map((op, idx) => (
                   <li key={idx}>
                     <button
-                      onClick={() => setRespuesta(idx)}
+                      onClick={() => registrarRespuesta(idx)}
+                      disabled={respuesta !== null}
                       className={`w-full text-left px-4 py-2 rounded-lg border transition ${
                         respuesta === idx
                           ? idx === escenario.preguntas[rol].correcta
@@ -162,17 +197,26 @@ export default function SimuPedApp() {
                 ))}
               </ul>
             </div>
-            <div className="text-center">
-              <button
-                onClick={volver}
-                className="mt-6 text-sm text-gray-500 hover:text-gray-700 underline"
-              >
-                ← Volver a escenarios
-              </button>
-            </div>
           </>
         )}
+
+        {fase === "final" && (
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-green-700">¡Simulación completada!</h2>
+            <p className="text-lg mt-2">Has respondido correctamente {totalCorrectas} de {resultados.length} preguntas.</p>
+            <button
+              onClick={iniciar}
+              className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+            >
+              Volver a empezar
+            </button>
+          </div>
+        )}
       </div>
+
+      <footer className="text-center text-xs italic text-gray-500 mt-8 py-4">
+        Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI Pediátrica de la AGC de la Infancia y Adolescencia en contexto del proyecto FHARMACHALLENGE.
+      </footer>
     </div>
   );
 }
