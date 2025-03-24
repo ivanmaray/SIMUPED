@@ -111,26 +111,32 @@ export default function SimuPedApp() {
   const registrarRespuesta = (idx) => {
     const correcta = idx === escenario.preguntas[rol].correcta;
     setRespuesta(idx);
-    setResultados((prev) => [
-      ...prev,
-      { escenario: escenario.titulo, correcta }
-    ]);
-    setTimeout(() => {
-      const siguiente = escenarios.find((e) => e.id !== escenario.id);
-      if (siguiente) {
-        setEscenario(siguiente);
-        setRespuesta(null);
-      } else {
-        setFase("final");
-        setFinalizado(true);
-      }
-    }, 2000);
+    setResultados((prev) => {
+      const nuevosResultados = [
+        ...prev,
+        { escenario: escenario.titulo, correcta }
+      ];
+
+      setTimeout(() => {
+        const respondidos = nuevosResultados.map(r => r.escenario);
+        const siguientes = escenarios.filter(e => !respondidos.includes(e.titulo));
+        if (siguientes.length > 0) {
+          setEscenario(siguientes[0]);
+          setRespuesta(null);
+        } else {
+          setFase("final");
+          setFinalizado(true);
+        }
+      }, 2000);
+
+      return nuevosResultados;
+    });
   };
 
   const totalCorrectas = resultados.filter((r) => r.correcta).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6 flex flex-col justify-between">
+    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
         <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
 
@@ -214,7 +220,7 @@ export default function SimuPedApp() {
         )}
       </div>
 
-      <footer className="text-center text-xs italic text-gray-500 mt-8 py-4">
+      <footer className="text-center text-xs italic text-gray-500 mt-8 py-4 w-full">
         Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI Pediátrica de la AGC de la Infancia y Adolescencia en contexto del proyecto FHARMACHALLENGE.
       </footer>
     </div>
