@@ -1,0 +1,536 @@
+[
+  {
+    "id": 1,
+    "titulo": "Sepsis pediátrica",
+    "descripcion": "Niño de 4 años con fiebre alta, petequias, dificultad respiratoria y signos de shock.",
+    "preguntas": {
+      "Médico": [
+        {
+          "texto": "¿Cuál es la conducta más adecuada ante este cuadro?",
+          "opciones": [
+            "Administrar antitérmicos y observar",
+            "Iniciar soporte vital, antibioterapia y volumen intravenoso",
+            "Esperar resultados de laboratorio",
+            "Derivar al centro de salud"
+          ],
+          "correcta": 1,
+          "explicacion": "Debe iniciarse soporte vital y antibioterapia precoz."
+        },
+        {
+          "texto": "¿Qué antibióticos están recomendados de inicio?",
+          "opciones": [
+            "Ceftriaxona y vancomicina",
+            "Amoxicilina sola",
+            "Ninguno, se espera al cultivo",
+            "Azitromicina"
+          ],
+          "correcta": 0,
+          "explicacion": "La combinación de ceftriaxona + vancomicina cubre patógenos frecuentes."
+        },
+        {
+          "texto": "¿Qué parámetro clínico indica mal pronóstico inmediato?",
+          "opciones": [
+            "Fiebre > 39°C",
+            "Taquipnea",
+            "Hipotensión",
+            "Irritabilidad"
+          ],
+          "correcta": 2,
+          "explicacion": "La hipotensión indica shock y es un signo de gravedad."
+        },
+        {
+          "texto": "¿Qué valor de lactato es preocupante en sepsis?",
+          "opciones": [
+            "Mayor de 2 mmol/L",
+            "Menor de 2 mmol/L",
+            "Igual a 1 mmol/L",
+            "No tiene importancia"
+          ],
+          "correcta": 0,
+          "explicacion": "Lactato >2 puede indicar hipoperfusión."
+        },
+        {
+          "texto": "¿Cuál es el tiempo objetivo para administrar antibióticos?",
+          "opciones": [
+            "Antes de 3 horas",
+            "Antes de 1 hora",
+            "Antes de 6 horas",
+            "Después de estabilizar al paciente"
+          ],
+          "correcta": 1,
+          "explicacion": "Idealmente se administra antibiótico en la primera hora."
+        }
+      ],
+      "Enfermero": [
+        {
+          "texto": "¿Cuál es el calibre mínimo de acceso recomendado?",
+          "opciones": [
+            "24G",
+            "22G",
+            "20G",
+            "18G"
+          ],
+          "correcta": 1,
+          "explicacion": "En niños pequeños se suele usar 22G."
+        },
+        {
+          "texto": "¿Cómo se monitoriza la perfusión periférica?",
+          "opciones": [
+            "Temperatura central",
+            "Color de lengua",
+            "Tiempo de relleno capilar",
+            "Diuresis"
+          ],
+          "correcta": 2,
+          "explicacion": "El TRC es un buen indicador clínico rápido."
+        },
+        {
+          "texto": "¿Qué volumen se administra inicialmente?",
+          "opciones": [
+            "10 mL/kg",
+            "20 mL/kg",
+            "40 mL/kg",
+            "5 mL/kg"
+          ],
+          "correcta": 1,
+          "explicacion": "El bolo inicial recomendado es de 20 mL/kg."
+        },
+        {
+          "texto": "¿Cómo debe administrarse el volumen?",
+          "opciones": [
+            "En perfusión lenta",
+            "En bolo rápido (10-15 min)",
+            "Por bomba a 5 mL/h",
+            "Diluirlo en 500 mL"
+          ],
+          "correcta": 1,
+          "explicacion": "En sepsis, el volumen debe administrarse en bolo rápido."
+        },
+        {
+          "texto": "¿Cuál es una señal de sobrecarga de volumen?",
+          "opciones": [
+            "Sudoración",
+            "Disnea y estertores",
+            "Fiebre persistente",
+            "Dolor abdominal"
+          ],
+          "correcta": 1,
+          "explicacion": "Disnea y estertores pueden indicar edema pulmonar."
+        }
+      ],
+      "Farmacéutico": [
+        {
+          "texto": "¿Qué estabilidad tiene la ceftriaxona una vez reconstituida?",
+          "opciones": [
+            "1 hora",
+            "6 horas a temperatura ambiente",
+            "24 horas refrigerada",
+            "No es estable"
+          ],
+          "correcta": 2,
+          "explicacion": "Reconstituida es estable 24h en nevera."
+        },
+        {
+          "texto": "¿Qué riesgo tiene la mezcla con calcio?",
+          "opciones": [
+            "No hay problema",
+            "Forma precipitados peligrosos",
+            "Aumenta eficacia",
+            "Disminuye el pH"
+          ],
+          "correcta": 1,
+          "explicacion": "La ceftriaxona con calcio puede formar precipitados."
+        },
+        {
+          "texto": "¿Qué volumen de dilución es adecuado para ceftriaxona?",
+          "opciones": [
+            "1 mL",
+            "2 mL",
+            "5 mL",
+            "Depende de la vía"
+          ],
+          "correcta": 3,
+          "explicacion": "Depende si es IV directa o perfusión."
+        },
+        {
+          "texto": "¿Qué antibiótico no debe mezclarse con aminoglucósidos?",
+          "opciones": [
+            "Cefotaxima",
+            "Amoxicilina",
+            "Vancomicina",
+            "Meropenem"
+          ],
+          "correcta": 2,
+          "explicacion": "Vancomicina y aminoglucósidos son incompatibles físicamente."
+        },
+        {
+          "texto": "¿Qué hacer si hay duda de compatibilidad?",
+          "opciones": [
+            "Consultar al médico",
+            "Interrumpir administración",
+            "Consultar guías de compatibilidad o farmacia",
+            "Administrar igual"
+          ],
+          "correcta": 2,
+          "explicacion": "Lo correcto es consultar fuentes oficiales o al farmacéutico."
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "titulo": "Parada cardiorrespiratoria",
+    "descripcion": "Niño de 6 años encontrado inconsciente, sin pulso, en el patio del colegio.",
+    "preguntas": {
+      "Médico": [
+        {
+          "texto": "¿Cuál es la primera maniobra a realizar?",
+          "opciones": [
+            "Administrar adrenalina",
+            "Abrir vía aérea y ventilar",
+            "Iniciar compresiones torácicas",
+            "Esperar al equipo de emergencias"
+          ],
+          "correcta": 2,
+          "explicacion": "Se deben iniciar compresiones torácicas de forma inmediata."
+        },
+        {
+          "texto": "¿Cada cuánto se administra adrenalina en RCP pediátrica?",
+          "opciones": [
+            "Cada 1 minuto",
+            "Cada 3 minutos",
+            "Cada 5 minutos",
+            "Cada 3-5 minutos"
+          ],
+          "correcta": 3,
+          "explicacion": "La adrenalina se administra cada 3-5 minutos."
+        },
+        {
+          "texto": "¿Qué ritmo NO es desfibrilable?",
+          "opciones": [
+            "FV",
+            "TV sin pulso",
+            "Asistolia",
+            "Fibrilación auricular"
+          ],
+          "correcta": 2,
+          "explicacion": "La asistolia no es ritmo desfibrilable."
+        },
+        {
+          "texto": "¿Cuál es la dosis de adrenalina en niños?",
+          "opciones": [
+            "0,1 mg/kg",
+            "0,01 mg/kg",
+            "1 mg",
+            "0,1 mL/kg de 1:10 000"
+          ],
+          "correcta": 1,
+          "explicacion": "La dosis es 0,01 mg/kg IV (1:10 000)."
+        },
+        {
+          "texto": "¿Qué maniobra se hace tras la desfibrilación?",
+          "opciones": [
+            "Comprobar ritmo",
+            "Administrar amiodarona",
+            "Iniciar compresiones de inmediato",
+            "Ventilar con ambú"
+          ],
+          "correcta": 2,
+          "explicacion": "Tras desfibrilar, se continúa con RCP inmediatamente."
+        }
+      ],
+      "Enfermero": [
+        {
+          "texto": "¿Cómo debe prepararse la adrenalina para RCP en un niño de 15 kg?",
+          "opciones": [
+            "1,5 mg sin diluir",
+            "0,15 mL de 1:1000",
+            "1,5 mL de 1:10 000",
+            "0,01 mg sin diluir"
+          ],
+          "correcta": 2,
+          "explicacion": "Se administra 0,01 mg/kg de solución 1:10 000 → 1,5 mL."
+        },
+        {
+          "texto": "¿Cuál es la frecuencia de compresiones torácicas recomendada?",
+          "opciones": [
+            "60-80/min",
+            "80-100/min",
+            "100-120/min",
+            "Más de 140/min"
+          ],
+          "correcta": 2,
+          "explicacion": "Se recomienda entre 100-120 compresiones por minuto."
+        },
+        {
+          "texto": "¿Qué profundidad deben tener las compresiones torácicas?",
+          "opciones": [
+            "1 cm",
+            "2 cm",
+            "1/3 del diámetro torácico",
+            "5 mm"
+          ],
+          "correcta": 2,
+          "explicacion": "Las compresiones deben alcanzar 1/3 del diámetro torácico."
+        },
+        {
+          "texto": "¿Cuál es la relación compresión-ventilación en RCP pediátrica a dos reanimadores?",
+          "opciones": [
+            "30:2",
+            "15:2",
+            "20:5",
+            "10:1"
+          ],
+          "correcta": 1,
+          "explicacion": "Con dos reanimadores, se hace 15:2."
+        },
+        {
+          "texto": "¿Qué equipo es imprescindible al preparar la vía aérea?",
+          "opciones": [
+            "Pinza de Magill",
+            "Laringoscopio y tubo adecuado",
+            "Ambú con reservorio",
+            "Todo lo anterior"
+          ],
+          "correcta": 3,
+          "explicacion": "Todo ese material debe estar listo para vía aérea en RCP."
+        }
+      ],
+      "Farmacéutico": [
+        {
+          "texto": "¿Qué concentración de adrenalina se utiliza en RCP IV pediátrica?",
+          "opciones": [
+            "1:1000",
+            "1:10 000",
+            "1:100",
+            "No importa"
+          ],
+          "correcta": 1,
+          "explicacion": "La solución adecuada es 1:10 000 para uso IV."
+        },
+        {
+          "texto": "¿Cuál es la incompatibilidad clásica de la adrenalina en perfusión?",
+          "opciones": [
+            "Con bicarbonato",
+            "Con paracetamol",
+            "Con midazolam",
+            "Con glucosa"
+          ],
+          "correcta": 0,
+          "explicacion": "Es incompatible con bicarbonato, puede inactivarse."
+        },
+        {
+          "texto": "¿Cómo se conserva la adrenalina 1:10 000 en la unidad?",
+          "opciones": [
+            "A temperatura ambiente y protegida de la luz",
+            "Siempre refrigerada",
+            "En jeringa precargada en nevera",
+            "No tiene requisitos"
+          ],
+          "correcta": 0,
+          "explicacion": "Debe estar protegida de la luz y temperatura ambiente."
+        },
+        {
+          "texto": "¿Qué fármaco antiarrítmico se usa tras 3 descargas?",
+          "opciones": [
+            "Adrenalina",
+            "Atropina",
+            "Amiodarona",
+            "Lidocaína"
+          ],
+          "correcta": 2,
+          "explicacion": "Amiodarona es el antiarrítmico de elección tras 3 descargas."
+        },
+        {
+          "texto": "¿Cuál es el volumen habitual de dilución para 150 mg de amiodarona IV en niños?",
+          "opciones": [
+            "5 mL",
+            "20 mL SF",
+            "50 mL SG5%",
+            "Diluir en 3 mL agua estéril"
+          ],
+          "correcta": 2,
+          "explicacion": "Amiodarona se diluye en 50 mL de glucosa al 5%."
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "titulo": "Convulsión febril prolongada",
+    "descripcion": "Niña de 2 años con fiebre y convulsión generalizada que no cede tras 5 minutos.",
+    "preguntas": {
+      "Médico": [
+        {
+          "texto": "¿Cuál es la primera opción terapéutica?",
+          "opciones": [
+            "Diazepam rectal o midazolam bucal",
+            "Paracetamol IV",
+            "Intubación inmediata",
+            "Ringer lactato en bolo"
+          ],
+          "correcta": 0,
+          "explicacion": "En convulsiones febriles prolongadas, se administran benzodiacepinas por vía no IV."
+        },
+        {
+          "texto": "¿Cuál es el tiempo máximo de duración para considerar estatus epiléptico?",
+          "opciones": [
+            "5 minutos",
+            "10 minutos",
+            "15 minutos",
+            "30 minutos"
+          ],
+          "correcta": 1,
+          "explicacion": "Se considera estatus si la convulsión dura más de 10 minutos."
+        },
+        {
+          "texto": "¿Qué diagnóstico debe descartarse si no cede la convulsión?",
+          "opciones": [
+            "Sepsis",
+            "Meningitis",
+            "Epilepsia",
+            "Todas las anteriores"
+          ],
+          "correcta": 3,
+          "explicacion": "Se deben descartar causas graves como meningitis, sepsis o epilepsia estructural."
+        },
+        {
+          "texto": "¿Qué exploración neurológica debe realizarse tras la crisis?",
+          "opciones": [
+            "Reflejos y consciencia",
+            "Fondo de ojo",
+            "Electroencefalograma inmediato",
+            "Solo temperatura"
+          ],
+          "correcta": 0,
+          "explicacion": "Tras la crisis se evalúan reflejos y estado de conciencia."
+        },
+        {
+          "texto": "¿Qué vía de administración es más rápida si no hay IV disponible?",
+          "opciones": [
+            "Intramuscular",
+            "Sublingual",
+            "Bucal o rectal",
+            "Subcutánea"
+          ],
+          "correcta": 2,
+          "explicacion": "Se recomienda vía bucal o rectal si no hay acceso venoso."
+        }
+      ],
+      "Enfermero": [
+        {
+          "texto": "¿Qué dosis de midazolam bucal corresponde a un niño de 12 kg?",
+          "opciones": [
+            "0,5 mg",
+            "1 mg",
+            "2,4 mg",
+            "6 mg"
+          ],
+          "correcta": 2,
+          "explicacion": "La dosis es 0,2 mg/kg → 12 kg × 0,2 = 2,4 mg."
+        },
+        {
+          "texto": "¿Qué debe prepararse si no hay respuesta al midazolam bucal?",
+          "opciones": [
+            "Segunda dosis de midazolam",
+            "Paracetamol rectal",
+            "Oxígeno y monitorización",
+            "Sulfato de magnesio"
+          ],
+          "correcta": 0,
+          "explicacion": "Puede administrarse una segunda dosis si persiste la crisis."
+        },
+        {
+          "texto": "¿Cuál es el principal riesgo en la administración bucal de midazolam?",
+          "opciones": [
+            "Hipotermia",
+            "Hipotensión",
+            "Depresión respiratoria",
+            "Bradicardia"
+          ],
+          "correcta": 2,
+          "explicacion": "Puede causar depresión respiratoria, debe vigilarse estrechamente."
+        },
+        {
+          "texto": "¿Qué hacer si el niño vomita tras el midazolam bucal?",
+          "opciones": [
+            "Repetir dosis completa",
+            "Esperar efecto",
+            "Cambiar a vía rectal",
+            "Inyectar IM"
+          ],
+          "correcta": 2,
+          "explicacion": "Si se pierde por vómito, se puede usar vía rectal como alternativa."
+        },
+        {
+          "texto": "¿Qué debe acompañar siempre la administración de benzodiacepinas?",
+          "opciones": [
+            "Monitorización cardiorrespiratoria",
+            "Suero glucosado",
+            "Paracetamol profiláctico",
+            "Oxígeno a alto flujo"
+          ],
+          "correcta": 0,
+          "explicacion": "Se requiere monitorización por riesgo de depresión respiratoria."
+        }
+      ],
+      "Farmacéutico": [
+        {
+          "texto": "¿Qué concentración de midazolam se usa habitualmente para uso bucal?",
+          "opciones": [
+            "1 mg/mL",
+            "5 mg/mL",
+            "0,5 mg/mL",
+            "10 mg/mL"
+          ],
+          "correcta": 1,
+          "explicacion": "Se emplea concentración de 5 mg/mL en bucal para mayor volumen reducido."
+        },
+        {
+          "texto": "¿Qué vía de administración NO es habitual para benzodiacepinas en crisis convulsivas?",
+          "opciones": [
+            "Bucal",
+            "Rectal",
+            "Sublingual",
+            "Subcutánea"
+          ],
+          "correcta": 3,
+          "explicacion": "La vía subcutánea no se emplea en urgencias para convulsiones."
+        },
+        {
+          "texto": "¿Cuánto tiempo dura la estabilidad de midazolam una vez abierto?",
+          "opciones": [
+            "24 horas",
+            "7 días",
+            "1 mes",
+            "Depende del fabricante"
+          ],
+          "correcta": 3,
+          "explicacion": "Depende del fabricante y condiciones, consultar ficha técnica."
+        },
+        {
+          "texto": "¿Qué interacción importante tiene el midazolam?",
+          "opciones": [
+            "Con paracetamol",
+            "Con macrólidos",
+            "Con adrenalina",
+            "Con sucralfato"
+          ],
+          "correcta": 1,
+          "explicacion": "Los macrólidos inhiben CYP3A4 y aumentan el efecto de midazolam."
+        },
+        {
+          "texto": "¿Cómo debe desecharse un vial parcialmente usado?",
+          "opciones": [
+            "Guardar en nevera",
+            "Desechar a las 24h",
+            "Según protocolo de residuos peligrosos",
+            "Reutilizar si está cerrado"
+          ],
+          "correcta": 2,
+          "explicacion": "Debe desecharse como residuo biosanitario según protocolo."
+        }
+      ]
+    }
+  }
+]

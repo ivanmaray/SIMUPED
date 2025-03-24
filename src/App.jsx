@@ -1,51 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
-
-const escenarios = [
-  {
-    id: 1,
-    titulo: "Sepsis pediátrica",
-    descripcion: "Niño de 4 años con fiebre alta, petequias, dificultad respiratoria y signos de shock.",
-    preguntas: {
-      Médico: {
-        texto: "¿Cuál es la conducta más adecuada ante este cuadro?",
-        opciones: [
-          "Administrar antitérmicos y observar",
-          "Iniciar soporte vital, antibioterapia y volumen intravenoso",
-          "Esperar resultados de laboratorio",
-          "Derivar al centro de salud",
-        ],
-        correcta: 1,
-        explicacion: "En una sospecha de sepsis con signos de shock, debe iniciarse soporte vital y antibioterapia precoz.",
-      },
-      Enfermero: {
-        texto: "¿Cómo prepararías la medicación antibiótica para este paciente?",
-        opciones: [
-          "Disolver en 100 mL de suero glucosado y administrar en bolo",
-          "Diluir en suero fisiológico y administrar en perfusión lenta",
-          "No es necesario diluir, administrar directamente",
-          "Preparar en jeringa y administrar IM",
-        ],
-        correcta: 1,
-        explicacion: "La administración antibiótica debe hacerse diluida en suero fisiológico y en perfusión para garantizar eficacia y seguridad.",
-      },
-      Farmacéutico: {
-        texto: "¿Cuál de estos aspectos es crítico para el antibiótico en sepsis pediátrica?",
-        opciones: [
-          "Compatibilidad con calcio en la línea venosa",
-          "Dosis exacta por kg, dilución y tiempo de administración",
-          "Refrigeración previa a su uso",
-          "Administrarlo junto a corticoides siempre",
-        ],
-        correcta: 1,
-        explicacion: "En sepsis, es esencial calcular la dosis por peso, diluir adecuadamente y controlar el tiempo de infusión.",
-      },
-    },
-  },
-  // Puedes añadir más escenarios aquí
-];
 
 export default function SimuPedApp() {
   const [fase, setFase] = useState("inicio");
@@ -54,6 +10,17 @@ export default function SimuPedApp() {
   const [respuesta, setRespuesta] = useState(null);
   const [resultados, setResultados] = useState([]);
   const [finalizado, setFinalizado] = useState(false);
+  const [escenarios, setEscenarios] = useState([]);
+
+  useEffect(() => {
+    fetch("/escenarios_simuped.json")
+      .then((res) => res.json())
+      .then((data) => setEscenarios(data));
+  }, []);
+
+  if (escenarios.length === 0) {
+    return <div className="text-center mt-10">Cargando escenarios...</div>;
+  }
 
   const volver = () => {
     setRespuesta(null);
