@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
 const escenarios = [
@@ -8,7 +6,7 @@ const escenarios = [
     id: 1,
     titulo: "Escenario 1",
     descripcion:
-      "Paciente de 4 años con fiebre, dolor abdominal, saturación baja, petequias y signos de sepsis."
+      "Paciente de 4 años con fiebre, dolor abdominal, saturación baja, petequias y signos de sepsis.",
   },
   // Puedes añadir más escenarios aquí
 ];
@@ -29,53 +27,75 @@ export default function SimuPedApp() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-4">
-      <h1 className="text-3xl font-bold text-center">SimuPed</h1>
+    <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
+      <h1 style={{ fontSize: "2rem", fontWeight: "bold", textAlign: "center" }}>
+        SimuPed
+      </h1>
 
       {fase === "inicio" && (
-        <div className="text-center">
-          <Button onClick={iniciarSimulacion}>Iniciar Simulación</Button>
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+          <button onClick={iniciarSimulacion}>Iniciar Simulación</button>
         </div>
       )}
 
       {fase === "rol" && (
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold">Selecciona tu rol</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <h2 style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
+            Selecciona tu rol
+          </h2>
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             {roles.map((r) => (
-              <Button key={r} onClick={() => seleccionarRol(r)}>
+              <button key={r} onClick={() => seleccionarRol(r)}>
                 {r}
-              </Button>
+              </button>
             ))}
           </div>
         </div>
       )}
 
       {fase === "escenario" && (
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold">Selecciona un escenario</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {escenarios.map((e) => (
-              <Card key={e.id} onClick={() => seleccionarEscenario(e)} className="cursor-pointer hover:shadow-lg">
-                <CardContent className="p-4">
-                  <h3 className="font-bold">{e.titulo}</h3>
-                  <p>{e.descripcion}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        <div>
+          <h2 style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
+            Selecciona un escenario
+          </h2>
+          {escenarios.map((e) => (
+            <div
+              key={e.id}
+              onClick={() => seleccionarEscenario(e)}
+              style={{
+                border: "1px solid #ccc",
+                padding: "1rem",
+                margin: "1rem 0",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              <h3>{e.titulo}</h3>
+              <p>{e.descripcion}</p>
+            </div>
+          ))}
         </div>
       )}
 
-      {fase === "simulacion" && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">{escenario.titulo}</h2>
+      {fase === "simulacion" && escenario && (
+        <div>
+          <h2 style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
+            {escenario.titulo}
+          </h2>
           <p>{escenario.descripcion}</p>
-          <div className="bg-gray-100 p-4 rounded">
-            <p className="italic">
-              Pregunta para el rol <strong>{rol}</strong>: ¿Cuál sería la actitud menos recomendable inicialmente?
+          <div
+            style={{
+              backgroundColor: "#f5f5f5",
+              padding: "1rem",
+              borderRadius: "6px",
+              marginTop: "1rem",
+            }}
+          >
+            <p>
+              Pregunta para el rol <strong>{rol}</strong>: ¿Cuál sería la actitud
+              menos recomendable inicialmente?
             </p>
-            <ul className="list-disc list-inside mt-2">
+            <ul style={{ marginTop: "0.5rem" }}>
               <li>Oxigenoterapia con mascarilla con reservorio</li>
               <li>Canalización de vía periférica e inicio de volumen</li>
               <li>Solicitar analítica y hemocultivo</li>
