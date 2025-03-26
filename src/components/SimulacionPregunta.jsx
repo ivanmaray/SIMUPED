@@ -1,10 +1,12 @@
-// src/components/SimulacionPregunta.jsx
 import React from "react";
 
-export default function SimulacionPregunta({ escenario, rol, respuesta, registrarRespuesta }) {
-  const pregunta = Array.isArray(escenario.preguntas[rol])
-    ? escenario.preguntas[rol][0]
-    : escenario.preguntas[rol];
+export default function SimulacionPregunta({ escenario, rol, respuesta, registrarRespuesta, resultados }) {
+  const totalRespondidas = resultados.filter(r => r.escenario === escenario.titulo).length;
+  const pregunta = escenario.preguntas[rol][totalRespondidas];
+
+  if (!pregunta) {
+    return <p className="text-center mt-6 text-gray-600">No hay más preguntas disponibles.</p>;
+  }
 
   return (
     <>

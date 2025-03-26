@@ -125,7 +125,7 @@ export default function SimuPedApp() {
             {fase === "inicio" && <Inicio onStart={iniciar} />}
             {fase === "rol" && <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />}
             {fase === "escenario" && <SeleccionEscenario escenarios={escenarios} elegirEscenario={elegirEscenario} volver={volver} />}
-            {fase === "simulacion" && escenario && <Pregunta escenario={escenario} rol={rol} respuesta={respuesta} registrarRespuesta={registrarRespuesta} resultados={resultados} />}
+            {fase === "simulacion" && escenario && <SimulacionPregunta escenario={escenario} rol={rol} respuesta={respuesta} registrarRespuesta={registrarRespuesta} resultados={resultados} />}
             {fase === "final" && <Resultados resultados={resultados} totalCorrectas={totalCorrectas} iniciar={iniciar} />}
           </motion.div>
         </AnimatePresence>
