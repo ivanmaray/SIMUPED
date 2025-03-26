@@ -1,4 +1,4 @@
-// SimulacionPregunta.jsx
+// src/components/SimulacionPregunta.jsx
 import React from "react";
 
 export default function SimulacionPregunta({
@@ -7,19 +7,14 @@ export default function SimulacionPregunta({
   respuesta,
   registrarRespuesta,
   resultados,
-  siguientePregunta,
+  siguientePregunta
 }) {
-  const respondidas = resultados.filter((r) => r.escenario === escenario.titulo).length;
+  // Cuántas preguntas se han respondido ya
+  const respondidas = resultados.filter(r => r.escenario === escenario.titulo).length;
   const pregunta = escenario.preguntas[rol][respondidas];
 
-  if (!pregunta) {
-    // No hay más preguntas en este escenario
-    return (
-      <p className="text-center text-gray-600">
-        No hay más preguntas disponibles en este escenario.
-      </p>
-    );
-  }
+  // Si ya no hay más preguntas, devolvemos null para que App.jsx muestre el resumen
+  if (!pregunta) return null;
 
   return (
     <>
