@@ -122,7 +122,7 @@ export default function SimuPedApp() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
           >
-            {fase === "inicio" && <Inicio iniciar={iniciar} />}
+            {fase === "inicio" && <Inicio onStart={iniciar} />}
             {fase === "rol" && <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />}
             {fase === "escenario" && <SeleccionEscenario escenarios={escenarios} elegirEscenario={elegirEscenario} volver={volver} />}
             {fase === "simulacion" && escenario && <Pregunta escenario={escenario} rol={rol} respuesta={respuesta} registrarRespuesta={registrarRespuesta} resultados={resultados} />}
