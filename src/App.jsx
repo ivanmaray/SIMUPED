@@ -5,14 +5,14 @@ import Inicio from "./components/Inicio";
 import SeleccionRol from "./components/SeleccionRol";
 import SeleccionEscenario from "./components/SeleccionEscenario";
 import SimulacionPregunta from "./components/SimulacionPregunta";
-import ResumenFinal from "./components/ResumenFinal";
 import ResumenEscenario from "./components/ResumenEscenario";
+import ResumenFinal from "./components/ResumenFinal";
 import Loader from "./components/Loader";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
 
 export default function SimuPedApp() {
-  const [fase, setFase] = useState("inicio");
+  const [fase, setFase] = useState("inicio");         // inicio | rol | escenario | simulacion | final
   const [rol, setRol] = useState("");
   const [escenario, setEscenario] = useState(null);
   const [respuesta, setRespuesta] = useState(null);
@@ -21,17 +21,21 @@ export default function SimuPedApp() {
     return guardados ? JSON.parse(guardados) : [];
   });
   const [escenarios, setEscenarios] = useState([]);
+  const [mostrarResumen, setMostrarResumen] = useState(false);
 
+  // Cargar JSON
   useEffect(() => {
     fetch("/escenarios_simuped.json")
       .then((res) => res.json())
       .then((data) => setEscenarios(data));
   }, []);
 
+  // Guardar en localStorage
   useEffect(() => {
     localStorage.setItem("simuped_resultados", JSON.stringify(resultados));
   }, [resultados]);
 
+  // Navegación
   const volver = () => {
     setRespuesta(null);
     if (fase === "rol") setFase("inicio");
@@ -42,6 +46,7 @@ export default function SimuPedApp() {
   const iniciar = () => {
     setResultados([]);
     setFase("rol");
+    setMostrarResumen(false);
   };
 
   const elegirRol = (r) => {
@@ -53,52 +58,63 @@ export default function SimuPedApp() {
     setEscenario(e);
     setRespuesta(null);
     setFase("simulacion");
+    setMostrarResumen(false);
   };
 
+  // Registrar la respuesta y dejar al usuario ver el color sin avanzar
   const registrarRespuesta = (idx) => {
-    const pregunta = Array.isArray(escenario.preguntas[rol])
-      ? escenario.preguntas[rol][resultados.filter(r => r.escenario === escenario.titulo).length]
-      : escenario.preguntas[rol];
+    const respondidas = resultados.filter((r) => r.escenario === escenario.titulo).length;
+    const pregunta = escenario.preguntas[rol][respondidas];
 
     const correcta = idx === pregunta.correcta;
     setRespuesta(idx);
 
-    setResultados((prev) => {
-      const nuevosResultados = [
-        ...prev,
-        {
-          escenario: escenario.titulo,
-          correcta,
-          seleccion: idx,
-          correctaIdx: pregunta.correcta,
-          explicacion: pregunta.explicacion,
-          opciones: pregunta.opciones,
-          pregunta: pregunta.texto,
-        },
-      ];
-
-      const totalRespondidas = nuevosResultados.filter(r => r.escenario === escenario.titulo).length;
-      const quedan = escenario.preguntas[rol].length > totalRespondidas;
-
-      setTimeout(() => {
-        if (quedan) {
-          setRespuesta(null);
-        } else {
-          setFase("resumenEscenario");
-        }
-      }, 2000);
-
-      return nuevosResultados;
-    });
+    setResultados((prev) => [
+      ...prev,
+      {
+        escenario: escenario.titulo,
+        correcta,
+        seleccion: idx,
+        correctaIdx: pregunta.correcta,
+        explicacion: pregunta.explicacion,
+        opciones: pregunta.opciones,
+        pregunta: pregunta.texto,
+      },
+    ]);
   };
 
-  const totalCorrectas = resultados.filter((r) => r.correcta).length;
-  const preguntasRespondidas = resultados.filter(r => r.escenario === escenario?.titulo).length;
-  const totalPreguntasActual = escenario?.preguntas?.[rol]?.length || 1;
-  const progreso = fase === "simulacion"
-    ? (preguntasRespondidas / totalPreguntasActual) * 100
+  // Avanzar manualmente
+  const siguientePregunta = () => {
+    const respondidas = resultados.filter((r) => r.escenario === escenario.titulo).length;
+    const total = escenario.preguntas[rol].length;
+    if (respondidas >= total) {
+      // Ya no hay más preguntas de este escenario
+      setMostrarResumen(true);
+    } else {
+      // Pasamos a la siguiente pregunta
+      setRespuesta(null);
+    }
+  };
+
+  // Volver a la fase "escenario" tras terminar un escenario
+  const volverAEscenarios = () => {
+    setEscenario(null);
+    setRespuesta(null);
+    setMostrarResumen(false);
+    setFase("escenario");
+  };
+
+  // Cálculo de la barra de progreso
+  const respondidasEscenario = resultados.filter(r => r.escenario === escenario?.titulo).length;
+  const totalPreguntas = escenario?.preguntas?.[rol]?.length || 1;
+  const progreso = fase === "simulacion" && !mostrarResumen
+    ? (respondidasEscenario / totalPreguntas) * 100
     : 0;
 
+  // Calcular total correctas para la fase final
+  const totalCorrectas = resultados.filter((r) => r.correcta).length;
+
+  // Si aún no cargó el JSON
   if (escenarios.length === 0) return <Loader />;
 
   return (
@@ -106,7 +122,8 @@ export default function SimuPedApp() {
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
         <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
 
-        {fase === "simulacion" && (
+        {/* Barra de progreso si estamos en simulacion y no en resumen */}
+        {fase === "simulacion" && !mostrarResumen && (
           <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
             <div
               className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
@@ -117,24 +134,52 @@ export default function SimuPedApp() {
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={fase + (escenario ? escenario.id : "")}
+            key={fase + (escenario ? escenario.id : "") + (mostrarResumen ? "resumen" : "sim")}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
           >
             {fase === "inicio" && <Inicio onStart={iniciar} />}
-            {fase === "rol" && <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />}
-            {fase === "escenario" && <SeleccionEscenario escenarios={escenarios} elegirEscenario={elegirEscenario} volver={volver} />}
-            {fase === "simulacion" && escenario && <SimulacionPregunta escenario={escenario} rol={rol} respuesta={respuesta} registrarRespuesta={registrarRespuesta} resultados={resultados} />}
-            {fase === "resumenEscenario" && escenario && (
-              <ResumenEscenario
-                resultados={resultados}
-                escenario={escenario}
-                volverAEscenario={() => setFase("escenario")}
+
+            {fase === "rol" && (
+              <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />
+            )}
+
+            {fase === "escenario" && (
+              <SeleccionEscenario
+                escenarios={escenarios}
+                elegirEscenario={elegirEscenario}
+                volver={volver}
               />
             )}
-            {fase === "final" && <ResumenFinal resultados={resultados} totalCorrectas={totalCorrectas} iniciar={iniciar} />}
+
+            {fase === "simulacion" && escenario && !mostrarResumen && (
+              <SimulacionPregunta
+                escenario={escenario}
+                rol={rol}
+                respuesta={respuesta}
+                registrarRespuesta={registrarRespuesta}
+                resultados={resultados}
+                siguientePregunta={siguientePregunta}
+              />
+            )}
+
+            {/* Al terminar las preguntas del escenario actual, mostramos el resumen de escenario */}
+            {fase === "simulacion" && mostrarResumen && (
+              <ResumenEscenario
+                resumen={resultados.filter(r => r.escenario === escenario.titulo)}
+                volverAEscenarios={volverAEscenarios}
+              />
+            )}
+
+            {fase === "final" && (
+              <ResumenFinal
+                resultados={resultados}
+                totalCorrectas={totalCorrectas}
+                iniciar={iniciar}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>

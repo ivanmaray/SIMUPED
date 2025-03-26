@@ -1,11 +1,24 @@
+// SimulacionPregunta.jsx
 import React from "react";
 
-export default function SimulacionPregunta({ escenario, rol, respuesta, registrarRespuesta, resultados }) {
-  const totalRespondidas = resultados.filter(r => r.escenario === escenario.titulo).length;
-  const pregunta = escenario.preguntas[rol][totalRespondidas];
+export default function SimulacionPregunta({
+  escenario,
+  rol,
+  respuesta,
+  registrarRespuesta,
+  resultados,
+  siguientePregunta,
+}) {
+  const respondidas = resultados.filter((r) => r.escenario === escenario.titulo).length;
+  const pregunta = escenario.preguntas[rol][respondidas];
 
   if (!pregunta) {
-    return <p className="text-center mt-6 text-gray-600">No hay más preguntas disponibles.</p>;
+    // No hay más preguntas en este escenario
+    return (
+      <p className="text-center text-gray-600">
+        No hay más preguntas disponibles en este escenario.
+      </p>
+    );
   }
 
   return (
@@ -13,7 +26,9 @@ export default function SimulacionPregunta({ escenario, rol, respuesta, registra
       <h2 className="text-2xl font-semibold text-blue-900 text-center">{escenario.titulo}</h2>
       <p className="text-gray-700 text-center">{escenario.descripcion}</p>
       <div className="bg-blue-50 p-6 rounded-xl mt-4">
-        <p className="mb-3 font-medium">Pregunta para <strong>{rol}</strong>:</p>
+        <p className="mb-3 font-medium">
+          Pregunta {respondidas + 1} para <strong>{rol}</strong>:
+        </p>
         <p className="mb-4">{pregunta.texto}</p>
         <ul className="space-y-2">
           {pregunta.opciones.map((op, idx) => (
@@ -34,10 +49,16 @@ export default function SimulacionPregunta({ escenario, rol, respuesta, registra
             </li>
           ))}
         </ul>
+
         {respuesta !== null && (
-          <p className="mt-4 text-sm italic text-gray-600">
-            {pregunta.explicacion}
-          </p>
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={siguientePregunta}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Siguiente pregunta
+            </button>
+          </div>
         )}
       </div>
     </>
