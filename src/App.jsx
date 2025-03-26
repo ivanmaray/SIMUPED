@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Inicio from "./components/Inicio";
 import SeleccionRol from "./components/SeleccionRol";
 import SeleccionEscenario from "./components/SeleccionEscenario";
-import Pregunta from "./components/Pregunta";
-import Resultados from "./components/Resultados";
+import SimulacionPregunta from "./components/SimulacionPregunta";
+import ResumenFinal from "./components/ResumenFinal";
 import Loader from "./components/Loader";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
