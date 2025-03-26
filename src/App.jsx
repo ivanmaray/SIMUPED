@@ -6,6 +6,7 @@ import SeleccionRol from "./components/SeleccionRol";
 import SeleccionEscenario from "./components/SeleccionEscenario";
 import SimulacionPregunta from "./components/SimulacionPregunta";
 import ResumenFinal from "./components/ResumenFinal";
+import ResumenEscenario from "./components/ResumenEscenario";
 import Loader from "./components/Loader";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
@@ -83,14 +84,7 @@ export default function SimuPedApp() {
         if (quedan) {
           setRespuesta(null);
         } else {
-          const respondidos = nuevosResultados.map((r) => r.escenario);
-          const siguientes = escenarios.filter((e) => !respondidos.includes(e.titulo));
-          if (siguientes.length > 0) {
-            setEscenario(siguientes[0]);
-            setRespuesta(null);
-          } else {
-            setFase("final");
-          }
+          setFase("resumenEscenario");
         }
       }, 2000);
 
@@ -99,7 +93,11 @@ export default function SimuPedApp() {
   };
 
   const totalCorrectas = resultados.filter((r) => r.correcta).length;
-  const progreso = (resultados.length / escenarios.length) * 100;
+  const preguntasRespondidas = resultados.filter(r => r.escenario === escenario?.titulo).length;
+  const totalPreguntasActual = escenario?.preguntas?.[rol]?.length || 1;
+  const progreso = fase === "simulacion"
+    ? (preguntasRespondidas / totalPreguntasActual) * 100
+    : 0;
 
   if (escenarios.length === 0) return <Loader />;
 
@@ -110,7 +108,10 @@ export default function SimuPedApp() {
 
         {fase === "simulacion" && (
           <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-            <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-500" style={{ width: `${progreso}%` }}></div>
+            <div
+              className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
+              style={{ width: `${progreso}%` }}
+            ></div>
           </div>
         )}
 
@@ -126,7 +127,14 @@ export default function SimuPedApp() {
             {fase === "rol" && <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />}
             {fase === "escenario" && <SeleccionEscenario escenarios={escenarios} elegirEscenario={elegirEscenario} volver={volver} />}
             {fase === "simulacion" && escenario && <SimulacionPregunta escenario={escenario} rol={rol} respuesta={respuesta} registrarRespuesta={registrarRespuesta} resultados={resultados} />}
-            {fase === "final" && <Resultados resultados={resultados} totalCorrectas={totalCorrectas} iniciar={iniciar} />}
+            {fase === "resumenEscenario" && escenario && (
+              <ResumenEscenario
+                resultados={resultados}
+                escenario={escenario}
+                volverAEscenario={() => setFase("escenario")}
+              />
+            )}
+            {fase === "final" && <ResumenFinal resultados={resultados} totalCorrectas={totalCorrectas} iniciar={iniciar} />}
           </motion.div>
         </AnimatePresence>
       </div>
