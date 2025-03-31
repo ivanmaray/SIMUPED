@@ -9,14 +9,16 @@ import ResumenEscenario from "./components/ResumenEscenario";
 import ResumenFinal from "./components/ResumenFinal";
 import Loader from "./components/Loader";
 import SelectorModalidad from "./components/SelectorModalidad";
+import SimulacionDirecta from "./components/SimulacionDirecta";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
 
 export default function SimuPedApp() {
-  // Nuevo estado para la modalidad: "online" o "directo"
+  // Estado para modalidad: "online" o "directo"
   const [modalidad, setModalidad] = useState(null);
 
-  const [fase, setFase] = useState("inicio"); // inicio | rol | escenario | simulacion | final
+  // Estados existentes
+  const [fase, setFase] = useState("inicio"); // inicio | rol | escenario | simulacion | final | simulacion_directo
   const [rol, setRol] = useState("");
   const [escenario, setEscenario] = useState(null);
   const [respuesta, setRespuesta] = useState(null);
@@ -44,13 +46,18 @@ export default function SimuPedApp() {
   const seleccionarModalidad = (modo) => {
     setModalidad(modo);
     // Para el modo online usamos el flujo actual
-    setFase("rol");
+    if (modo === "online") {
+      setFase("rol");
+    } else if (modo === "directo") {
+      // Para directo, mostramos un dashboard o flujo distinto
+      setFase("inicio_directo");
+    }
   };
 
   // -------- Navegación / Fases -----------
   const volver = () => {
     setRespuesta(null);
-    if (fase === "rol") {
+    if (fase === "rol" || fase === "inicio_directo") {
       setFase("inicio");
     } else if (fase === "escenario") {
       setFase("rol");
@@ -77,6 +84,12 @@ export default function SimuPedApp() {
     setFase("simulacion");
     setMostrarResumen(false);
     setPreguntaIndex(0);
+  };
+
+  // Para la modalidad en directo, podrías tener otra función de inicio
+  const iniciarDirecto = () => {
+    // Aquí se puede iniciar el flujo en directo, por ejemplo, redirigir a un dashboard
+    setFase("simulacion_directo");
   };
 
   // ---------- Registrar respuesta ----------
@@ -140,46 +153,69 @@ export default function SimuPedApp() {
         {/* Si aún no se ha seleccionado la modalidad, mostramos el selector */}
         {!modalidad && <SelectorModalidad onSelect={seleccionarModalidad} />}
 
-        {/* Una vez seleccionada la modalidad, continuamos con el flujo (actualmente online) */}
-        {modalidad && fase === "inicio" && <Inicio onStart={iniciar} />}
-
-        {modalidad && fase === "rol" && (
-          <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />
+        {/* Flujo para modalidad ONLINE */}
+        {modalidad === "online" && (
+          <>
+            {fase === "inicio" && <Inicio onStart={iniciar} />}
+            {fase === "rol" && (
+              <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />
+            )}
+            {fase === "escenario" && (
+              <SeleccionEscenario
+                escenarios={escenarios}
+                elegirEscenario={elegirEscenario}
+                volver={volver}
+              />
+            )}
+            {fase === "simulacion" && escenario && !mostrarResumen && (
+              <SimulacionPregunta
+                escenario={escenario}
+                rol={rol}
+                respuesta={respuesta}
+                registrarRespuesta={registrarRespuesta}
+                resultados={resultados}
+                siguientePregunta={siguientePregunta}
+                preguntaIndex={preguntaIndex}
+              />
+            )}
+            {fase === "simulacion" && mostrarResumen && (
+              <ResumenEscenario
+                resumen={resultados.filter((r) => r.escenario === escenario.titulo)}
+                volverAEscenarios={volverAEscenarios}
+              />
+            )}
+            {fase === "final" && (
+              <ResumenFinal
+                resultados={resultados}
+                totalCorrectas={totalCorrectas}
+                iniciar={iniciar}
+              />
+            )}
+          </>
         )}
 
-        {modalidad && fase === "escenario" && (
-          <SeleccionEscenario
-            escenarios={escenarios}
-            elegirEscenario={elegirEscenario}
-            volver={volver}
-          />
-        )}
-
-        {modalidad && fase === "simulacion" && escenario && !mostrarResumen && (
-          <SimulacionPregunta
-            escenario={escenario}
-            rol={rol}
-            respuesta={respuesta}
-            registrarRespuesta={registrarRespuesta}
-            resultados={resultados}
-            siguientePregunta={siguientePregunta}
-            preguntaIndex={preguntaIndex}
-          />
-        )}
-
-        {modalidad && fase === "simulacion" && mostrarResumen && (
-          <ResumenEscenario
-            resumen={resultados.filter((r) => r.escenario === escenario.titulo)}
-            volverAEscenarios={volverAEscenarios}
-          />
-        )}
-
-        {modalidad && fase === "final" && (
-          <ResumenFinal
-            resultados={resultados}
-            totalCorrectas={totalCorrectas}
-            iniciar={iniciar}
-          />
+        {/* Flujo para modalidad EN DIRECTO */}
+        {modalidad === "directo" && (
+          <>
+            {fase === "inicio_directo" && (
+              <SimulacionDirecta onStartDirecta={iniciarDirecto} />
+            )}
+            {fase === "simulacion_directo" && (
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-green-700">Simulación en Directo</h2>
+                <p className="text-lg">
+                  Aquí se mostrará la simulación en directo, con comunicación en tiempo real.
+                </p>
+                {/* Aquí puedes agregar más componentes o lógica para la simulación en directo */}
+                <AnimatedButton
+                  onClick={() => setFase("final")}
+                  className="mt-6 bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700"
+                >
+                  Finalizar Simulación en Directo
+                </AnimatedButton>
+              </div>
+            )}
+          </>
         )}
       </div>
 
