@@ -1,6 +1,7 @@
 // App.jsx
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Inicio from "./components/Inicio";
 import SeleccionRol from "./components/SeleccionRol";
 import SeleccionEscenario from "./components/SeleccionEscenario";
@@ -54,7 +55,6 @@ export default function SimuPedApp() {
 
   // Función para reiniciar la modalidad (volver al selector)
   const reiniciarModalidad = () => {
-    // Reiniciamos todos los estados relacionados
     setModalidad(null);
     setFase("inicio");
     setRol("");
@@ -96,7 +96,7 @@ export default function SimuPedApp() {
     setPreguntaIndex(0);
   };
 
-  // Para la modalidad en directo
+  // Para la modalidad en directo, se inicia con este método
   const iniciarDirecto = () => {
     setFase("simulacion_directo");
   };
@@ -131,7 +131,7 @@ export default function SimuPedApp() {
     }
   };
 
-  // Al terminar el escenario, ver su resumen y volver a la lista
+  // Al terminar el escenario, ver su resumen y luego volver a la lista
   const volverAEscenarios = () => {
     setEscenario(null);
     setRespuesta(null);
@@ -157,13 +157,14 @@ export default function SimuPedApp() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-start">
           <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
           {modalidad && (
             <button
               onClick={reiniciarModalidad}
-              className="text-sm text-blue-600 hover:underline self-start"
+              className="flex items-center text-sm text-blue-600 hover:underline focus:outline-none"
             >
+              <ArrowLeftIcon className="w-4 h-4 mr-1" />
               Volver a seleccionar modalidad
             </button>
           )}

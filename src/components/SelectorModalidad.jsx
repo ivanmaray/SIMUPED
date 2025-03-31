@@ -15,7 +15,7 @@ export default function SelectorModalidad({ onSelect }) {
           >
             Versión en Directo
           </AnimatedButton>
-          {/* Mostrar el video/gif local para la modalidad en directo */}
+          {/* Video/gif para modalidad en directo */}
           <div className="mt-4 w-64 h-36 bg-gray-200 flex items-center justify-center">
             <img
               src="/videos/video1_directo.gif"
@@ -32,9 +32,13 @@ export default function SelectorModalidad({ onSelect }) {
           >
             Versión Online
           </AnimatedButton>
-          {/* Placeholder para video online */}
+          {/* Mostrar el GIF para la modalidad online */}
           <div className="mt-4 w-64 h-36 bg-gray-200 flex items-center justify-center">
-            <p className="text-gray-600">Vídeo online</p>
+            <img
+              src="/videos/video1_online.gif"
+              alt="Video Online"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>
