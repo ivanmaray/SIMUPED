@@ -16,6 +16,7 @@ export default function SimuPedApp() {
   const [rol, setRol] = useState("");
   const [escenario, setEscenario] = useState(null);
   const [respuesta, setRespuesta] = useState(null);
+  const [preguntaIndex, setPreguntaIndex] = useState(0); // Nuevo estado para el índice de la pregunta actual
   const [resultados, setResultados] = useState(() => {
     const guardados = localStorage.getItem("simuped_resultados");
     return guardados ? JSON.parse(guardados) : [];
@@ -52,6 +53,7 @@ export default function SimuPedApp() {
     setResultados([]);
     setFase("rol");
     setMostrarResumen(false);
+    setPreguntaIndex(0);
   };
 
   const elegirRol = (r) => {
@@ -64,14 +66,12 @@ export default function SimuPedApp() {
     setRespuesta(null);
     setFase("simulacion");
     setMostrarResumen(false);
+    setPreguntaIndex(0); // Reiniciamos el índice al elegir un escenario
   };
 
   // ---------- Registrar respuesta ----------
   const registrarRespuesta = (idx) => {
-    // Calculamos cuántas ha respondido ya de este escenario
-    const respondidas = resultados.filter(r => r.escenario === escenario.titulo).length;
-    const pregunta = escenario.preguntas[rol][respondidas];
-
+    const pregunta = escenario.preguntas[rol][preguntaIndex];
     const correcta = idx === pregunta.correcta;
     setRespuesta(idx);
 
@@ -92,14 +92,13 @@ export default function SimuPedApp() {
 
   // ---------- Botón "Siguiente" en SimulacionPregunta ----------
   const siguientePregunta = () => {
-    const respondidas = resultados.filter(r => r.escenario === escenario.titulo).length;
     const total = escenario.preguntas[rol].length;
-
-    if (respondidas >= total) {
+    if (preguntaIndex + 1 >= total) {
       // Se han respondido todas las preguntas de este escenario => mostrar resumen de escenario
       setMostrarResumen(true);
     } else {
-      // Todavía hay más preguntas: reseteamos respuesta para mostrar la siguiente
+      // Incrementamos el índice y reseteamos respuesta para mostrar la siguiente pregunta
+      setPreguntaIndex(preguntaIndex + 1);
       setRespuesta(null);
     }
   };
@@ -113,14 +112,15 @@ export default function SimuPedApp() {
   };
 
   // ---------- Barra de progreso ----------
-  const respondidasEscenario = resultados.filter(r => r.escenario === escenario?.titulo).length;
+  const respondidasEscenario = preguntaIndex; // Usamos el índice en lugar de contar resultados
   const totalPreguntas = escenario?.preguntas?.[rol]?.length || 1;
-  const progreso = fase === "simulacion" && !mostrarResumen
-    ? (respondidasEscenario / totalPreguntas) * 100
-    : 0;
+  const progreso =
+    fase === "simulacion" && !mostrarResumen
+      ? (respondidasEscenario / totalPreguntas) * 100
+      : 0;
 
   // Contabilizar correctas totales (por si algún día pasas a fase final)
-  const totalCorrectas = resultados.filter(r => r.correcta).length;
+  const totalCorrectas = resultados.filter((r) => r.correcta).length;
 
   // Mientras no cargue el JSON
   if (escenarios.length === 0) {
@@ -154,16 +154,10 @@ export default function SimuPedApp() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
           >
-            {fase === "inicio" && (
-              <Inicio onStart={iniciar} />
-            )}
+            {fase === "inicio" && <Inicio onStart={iniciar} />}
 
             {fase === "rol" && (
-              <SeleccionRol
-                roles={roles}
-                elegirRol={elegirRol}
-                volver={volver}
-              />
+              <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />
             )}
 
             {fase === "escenario" && (
@@ -183,13 +177,14 @@ export default function SimuPedApp() {
                 registrarRespuesta={registrarRespuesta}
                 resultados={resultados}
                 siguientePregunta={siguientePregunta}
+                preguntaIndex={preguntaIndex} // Pasamos el índice de la pregunta actual
               />
             )}
 
             {/* Cuando acabamos las preguntas de este escenario */}
             {fase === "simulacion" && mostrarResumen && (
               <ResumenEscenario
-                resumen={resultados.filter(r => r.escenario === escenario.titulo)}
+                resumen={resultados.filter((r) => r.escenario === escenario.titulo)}
                 volverAEscenarios={volverAEscenarios}
               />
             )}

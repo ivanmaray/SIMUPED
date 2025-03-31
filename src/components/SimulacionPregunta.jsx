@@ -7,22 +7,23 @@ export default function SimulacionPregunta({
   respuesta,
   registrarRespuesta,
   resultados,
-  siguientePregunta
+  siguientePregunta,
+  preguntaIndex // Nuevo prop recibido
 }) {
-  // Cuántas preguntas se han respondido ya
-  const respondidas = resultados.filter(r => r.escenario === escenario.titulo).length;
-  const pregunta = escenario.preguntas[rol][respondidas];
+  const pregunta = escenario.preguntas[rol][preguntaIndex];
 
   // Si ya no hay más preguntas, devolvemos null para que App.jsx muestre el resumen
   if (!pregunta) return null;
 
   return (
     <>
-      <h2 className="text-2xl font-semibold text-blue-900 text-center">{escenario.titulo}</h2>
+      <h2 className="text-2xl font-semibold text-blue-900 text-center">
+        {escenario.titulo}
+      </h2>
       <p className="text-gray-700 text-center">{escenario.descripcion}</p>
       <div className="bg-blue-50 p-6 rounded-xl mt-4">
         <p className="mb-3 font-medium">
-          Pregunta {respondidas + 1} para <strong>{rol}</strong>:
+          Pregunta {preguntaIndex + 1} para <strong>{rol}</strong>:
         </p>
         <p className="mb-4">{pregunta.texto}</p>
         <ul className="space-y-2">
