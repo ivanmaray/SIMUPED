@@ -10,6 +10,7 @@ import ResumenFinal from "./components/ResumenFinal";
 import Loader from "./components/Loader";
 import SelectorModalidad from "./components/SelectorModalidad";
 import SimulacionDirecta from "./components/SimulacionDirecta";
+import AnimatedButton from "./components/AnimatedButton";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
 
@@ -17,7 +18,6 @@ export default function SimuPedApp() {
   // Estado para modalidad: "online" o "directo"
   const [modalidad, setModalidad] = useState(null);
 
-  // Estados existentes
   const [fase, setFase] = useState("inicio"); // inicio | rol | escenario | simulacion | final | simulacion_directo
   const [rol, setRol] = useState("");
   const [escenario, setEscenario] = useState(null);
@@ -45,13 +45,23 @@ export default function SimuPedApp() {
   // Función para seleccionar la modalidad
   const seleccionarModalidad = (modo) => {
     setModalidad(modo);
-    // Para el modo online usamos el flujo actual
     if (modo === "online") {
       setFase("rol");
     } else if (modo === "directo") {
-      // Para directo, mostramos un dashboard o flujo distinto
       setFase("inicio_directo");
     }
+  };
+
+  // Función para reiniciar la modalidad (volver al selector)
+  const reiniciarModalidad = () => {
+    // Reiniciamos todos los estados relacionados
+    setModalidad(null);
+    setFase("inicio");
+    setRol("");
+    setEscenario(null);
+    setRespuesta(null);
+    setPreguntaIndex(0);
+    setResultados([]);
   };
 
   // -------- Navegación / Fases -----------
@@ -86,9 +96,8 @@ export default function SimuPedApp() {
     setPreguntaIndex(0);
   };
 
-  // Para la modalidad en directo, podrías tener otra función de inicio
+  // Para la modalidad en directo
   const iniciarDirecto = () => {
-    // Aquí se puede iniciar el flujo en directo, por ejemplo, redirigir a un dashboard
     setFase("simulacion_directo");
   };
 
@@ -122,7 +131,7 @@ export default function SimuPedApp() {
     }
   };
 
-  // Al terminar el escenario, ver su resumen => y luego volver a lista de escenarios
+  // Al terminar el escenario, ver su resumen y volver a la lista
   const volverAEscenarios = () => {
     setEscenario(null);
     setRespuesta(null);
@@ -148,7 +157,17 @@ export default function SimuPedApp() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
-        <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
+        <div className="flex justify-between">
+          <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
+          {modalidad && (
+            <button
+              onClick={reiniciarModalidad}
+              className="text-sm text-blue-600 hover:underline self-start"
+            >
+              Volver a seleccionar modalidad
+            </button>
+          )}
+        </div>
 
         {/* Si aún no se ha seleccionado la modalidad, mostramos el selector */}
         {!modalidad && <SelectorModalidad onSelect={seleccionarModalidad} />}
@@ -202,11 +221,13 @@ export default function SimuPedApp() {
             )}
             {fase === "simulacion_directo" && (
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-green-700">Simulación en Directo</h2>
+                <h2 className="text-2xl font-bold text-green-700">
+                  Simulación en Directo
+                </h2>
                 <p className="text-lg">
                   Aquí se mostrará la simulación en directo, con comunicación en tiempo real.
                 </p>
-                {/* Aquí puedes agregar más componentes o lógica para la simulación en directo */}
+                {/* Aquí puedes integrar más componentes o lógica para el modo en directo */}
                 <AnimatedButton
                   onClick={() => setFase("final")}
                   className="mt-6 bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700"
@@ -220,8 +241,9 @@ export default function SimuPedApp() {
       </div>
 
       <footer className="text-center text-xs italic text-gray-500 mt-8 py-4 w-full">
-        Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI Pediátrica
-        de la AGC de la Infancia y Adolescencia del HUCA en contexto del proyecto FHARMACHALLENGE.
+        Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI
+        Pediátrica de la AGC de la Infancia y Adolescencia del HUCA en contexto del proyecto
+        FHARMACHALLENGE.
       </footer>
     </div>
   );
