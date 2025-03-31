@@ -8,21 +8,24 @@ import SimulacionPregunta from "./components/SimulacionPregunta";
 import ResumenEscenario from "./components/ResumenEscenario";
 import ResumenFinal from "./components/ResumenFinal";
 import Loader from "./components/Loader";
+import SelectorModalidad from "./components/SelectorModalidad";
 
 const roles = ["Médico", "Enfermero", "Farmacéutico"];
 
 export default function SimuPedApp() {
+  // Nuevo estado para la modalidad: "online" o "directo"
+  const [modalidad, setModalidad] = useState(null);
+
   const [fase, setFase] = useState("inicio"); // inicio | rol | escenario | simulacion | final
   const [rol, setRol] = useState("");
   const [escenario, setEscenario] = useState(null);
   const [respuesta, setRespuesta] = useState(null);
-  const [preguntaIndex, setPreguntaIndex] = useState(0); // Nuevo estado para el índice de la pregunta actual
+  const [preguntaIndex, setPreguntaIndex] = useState(0);
   const [resultados, setResultados] = useState(() => {
     const guardados = localStorage.getItem("simuped_resultados");
     return guardados ? JSON.parse(guardados) : [];
   });
   const [escenarios, setEscenarios] = useState([]);
-  // Para saber si estamos en resumen de este escenario
   const [mostrarResumen, setMostrarResumen] = useState(false);
 
   // Cargar JSON de escenarios
@@ -36,6 +39,13 @@ export default function SimuPedApp() {
   useEffect(() => {
     localStorage.setItem("simuped_resultados", JSON.stringify(resultados));
   }, [resultados]);
+
+  // Función para seleccionar la modalidad
+  const seleccionarModalidad = (modo) => {
+    setModalidad(modo);
+    // Para el modo online usamos el flujo actual
+    setFase("rol");
+  };
 
   // -------- Navegación / Fases -----------
   const volver = () => {
@@ -66,7 +76,7 @@ export default function SimuPedApp() {
     setRespuesta(null);
     setFase("simulacion");
     setMostrarResumen(false);
-    setPreguntaIndex(0); // Reiniciamos el índice al elegir un escenario
+    setPreguntaIndex(0);
   };
 
   // ---------- Registrar respuesta ----------
@@ -74,8 +84,6 @@ export default function SimuPedApp() {
     const pregunta = escenario.preguntas[rol][preguntaIndex];
     const correcta = idx === pregunta.correcta;
     setRespuesta(idx);
-
-    // Guardamos la respuesta en resultados
     setResultados((prev) => [
       ...prev,
       {
@@ -94,10 +102,8 @@ export default function SimuPedApp() {
   const siguientePregunta = () => {
     const total = escenario.preguntas[rol].length;
     if (preguntaIndex + 1 >= total) {
-      // Se han respondido todas las preguntas de este escenario => mostrar resumen de escenario
       setMostrarResumen(true);
     } else {
-      // Incrementamos el índice y reseteamos respuesta para mostrar la siguiente pregunta
       setPreguntaIndex(preguntaIndex + 1);
       setRespuesta(null);
     }
@@ -112,17 +118,16 @@ export default function SimuPedApp() {
   };
 
   // ---------- Barra de progreso ----------
-  const respondidasEscenario = preguntaIndex; // Usamos el índice en lugar de contar resultados
+  const respondidasEscenario = preguntaIndex;
   const totalPreguntas = escenario?.preguntas?.[rol]?.length || 1;
   const progreso =
     fase === "simulacion" && !mostrarResumen
       ? (respondidasEscenario / totalPreguntas) * 100
       : 0;
 
-  // Contabilizar correctas totales (por si algún día pasas a fase final)
+  // Contabilizar correctas totales
   const totalCorrectas = resultados.filter((r) => r.correcta).length;
 
-  // Mientras no cargue el JSON
   if (escenarios.length === 0) {
     return <Loader />;
   }
@@ -132,72 +137,50 @@ export default function SimuPedApp() {
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
         <h1 className="text-4xl font-bold text-blue-900 text-center">SimuPed 🩺</h1>
 
-        {/* Mostramos barra de progreso solo si estamos contestando preguntas (no en resumen) */}
-        {fase === "simulacion" && !mostrarResumen && (
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-            <div
-              className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
-              style={{ width: `${progreso}%` }}
-            ></div>
-          </div>
+        {/* Si aún no se ha seleccionado la modalidad, mostramos el selector */}
+        {!modalidad && <SelectorModalidad onSelect={seleccionarModalidad} />}
+
+        {/* Una vez seleccionada la modalidad, continuamos con el flujo (actualmente online) */}
+        {modalidad && fase === "inicio" && <Inicio onStart={iniciar} />}
+
+        {modalidad && fase === "rol" && (
+          <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />
         )}
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={
-              fase +
-              (escenario ? escenario.id : "") +
-              (mostrarResumen ? "_resumen" : "")
-            }
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-          >
-            {fase === "inicio" && <Inicio onStart={iniciar} />}
+        {modalidad && fase === "escenario" && (
+          <SeleccionEscenario
+            escenarios={escenarios}
+            elegirEscenario={elegirEscenario}
+            volver={volver}
+          />
+        )}
 
-            {fase === "rol" && (
-              <SeleccionRol roles={roles} elegirRol={elegirRol} volver={volver} />
-            )}
+        {modalidad && fase === "simulacion" && escenario && !mostrarResumen && (
+          <SimulacionPregunta
+            escenario={escenario}
+            rol={rol}
+            respuesta={respuesta}
+            registrarRespuesta={registrarRespuesta}
+            resultados={resultados}
+            siguientePregunta={siguientePregunta}
+            preguntaIndex={preguntaIndex}
+          />
+        )}
 
-            {fase === "escenario" && (
-              <SeleccionEscenario
-                escenarios={escenarios}
-                elegirEscenario={elegirEscenario}
-                volver={volver}
-              />
-            )}
+        {modalidad && fase === "simulacion" && mostrarResumen && (
+          <ResumenEscenario
+            resumen={resultados.filter((r) => r.escenario === escenario.titulo)}
+            volverAEscenarios={volverAEscenarios}
+          />
+        )}
 
-            {/* Fase de simulación (contestando) */}
-            {fase === "simulacion" && escenario && !mostrarResumen && (
-              <SimulacionPregunta
-                escenario={escenario}
-                rol={rol}
-                respuesta={respuesta}
-                registrarRespuesta={registrarRespuesta}
-                resultados={resultados}
-                siguientePregunta={siguientePregunta}
-                preguntaIndex={preguntaIndex} // Pasamos el índice de la pregunta actual
-              />
-            )}
-
-            {/* Cuando acabamos las preguntas de este escenario */}
-            {fase === "simulacion" && mostrarResumen && (
-              <ResumenEscenario
-                resumen={resultados.filter((r) => r.escenario === escenario.titulo)}
-                volverAEscenarios={volverAEscenarios}
-              />
-            )}
-
-            {fase === "final" && (
-              <ResumenFinal
-                resultados={resultados}
-                totalCorrectas={totalCorrectas}
-                iniciar={iniciar}
-              />
-            )}
-          </motion.div>
-        </AnimatePresence>
+        {modalidad && fase === "final" && (
+          <ResumenFinal
+            resultados={resultados}
+            totalCorrectas={totalCorrectas}
+            iniciar={iniciar}
+          />
+        )}
       </div>
 
       <footer className="text-center text-xs italic text-gray-500 mt-8 py-4 w-full">
