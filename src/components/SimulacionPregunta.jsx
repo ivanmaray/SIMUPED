@@ -1,5 +1,7 @@
 // src/components/SimulacionPregunta.jsx
 import React from "react";
+import AnimatedButton from "./AnimatedButton";
+import { CheckIcon, XIcon } from "@heroicons/react/solid";
 
 export default function SimulacionPregunta({
   escenario,
@@ -32,7 +34,7 @@ export default function SimulacionPregunta({
               <button
                 onClick={() => registrarRespuesta(idx)}
                 disabled={respuesta !== null}
-                className={`w-full text-left px-4 py-2 rounded-lg border transition ${
+                className={`w-full text-left px-4 py-2 rounded-lg border flex items-center justify-between transition ${
                   respuesta === idx
                     ? idx === pregunta.correcta
                       ? "bg-green-200 border-green-500"
@@ -40,7 +42,14 @@ export default function SimulacionPregunta({
                     : "bg-white hover:bg-blue-100 border-gray-300"
                 }`}
               >
-                {op}
+                <span>{op}</span>
+                {respuesta === idx && (
+                  idx === pregunta.correcta ? (
+                    <CheckIcon className="w-5 h-5 text-green-600" />
+                  ) : (
+                    <XIcon className="w-5 h-5 text-red-600" />
+                  )
+                )}
               </button>
             </li>
           ))}
@@ -48,12 +57,12 @@ export default function SimulacionPregunta({
 
         {respuesta !== null && (
           <div className="flex justify-end mt-4">
-            <button
+            <AnimatedButton
               onClick={siguientePregunta}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Siguiente pregunta
-            </button>
+            </AnimatedButton>
           </div>
         )}
       </div>

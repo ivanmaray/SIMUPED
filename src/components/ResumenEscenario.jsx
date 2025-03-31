@@ -1,5 +1,6 @@
 // src/components/ResumenEscenario.jsx
 import React from "react";
+import ResumenGrafico from "./ResumenGrafico";
 
 export default function ResumenEscenario({ resumen, volverAEscenarios }) {
   if (resumen.length === 0) {
@@ -25,6 +26,12 @@ export default function ResumenEscenario({ resumen, volverAEscenarios }) {
       <p className="text-gray-700">
         Has respondido correctamente {correctas} de {resumen.length} preguntas.
       </p>
+      
+      {/* Se muestra el gráfico resumen */}
+      <div className="my-6">
+        <ResumenGrafico resultados={resumen} />
+      </div>
+
       <div className="text-left space-y-4">
         {resumen.map((r, i) => (
           <div key={i} className="bg-white p-4 border rounded-lg shadow">
@@ -37,7 +44,8 @@ export default function ResumenEscenario({ resumen, volverAEscenarios }) {
             </p>
             {!r.correcta && (
               <p className="text-sm text-gray-700">
-                Correcta: <strong className="text-green-600">
+                Correcta:{" "}
+                <strong className="text-green-600">
                   {r.opciones[r.correctaIdx]}
                 </strong>
               </p>
@@ -46,6 +54,7 @@ export default function ResumenEscenario({ resumen, volverAEscenarios }) {
           </div>
         ))}
       </div>
+      
       <button
         onClick={volverAEscenarios}
         className="mt-6 bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
