@@ -1,7 +1,7 @@
 // src/components/SimulacionPregunta.jsx
 import React from "react";
 import AnimatedButton from "./AnimatedButton";
-import { CheckIcon, XIcon } from "@heroicons/react/solid";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function SimulacionPregunta({
   escenario,
@@ -47,7 +47,7 @@ export default function SimulacionPregunta({
                   idx === pregunta.correcta ? (
                     <CheckIcon className="w-5 h-5 text-green-600" />
                   ) : (
-                    <XIcon className="w-5 h-5 text-red-600" />
+                    <XMarkIcon className="w-5 h-5 text-red-600" />
                   )
                 )}
               </button>
