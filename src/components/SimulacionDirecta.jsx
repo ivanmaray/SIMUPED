@@ -10,9 +10,9 @@ export default function SimulacionDirecta({ onStartDirecta }) {
         Esta es la versión en directo. Aquí se mostrará el caso en tiempo real, con preguntas
         dirigidas a los diferentes roles.
       </p>
-      {/* Aquí se puede integrar un vídeo en vivo o una vista de la sala */}
-      <div className="mt-4 w-full h-64 bg-gray-200 flex items-center justify-center">
-        <p className="text-gray-600">Vídeo en vivo</p>
+      {/* Mostrar el GIF como video o imagen */}
+      <div className="mt-4 w-full max-w-md mx-auto">
+        <img src="/videos/video1_directo.gif" alt="Simulación en directo" className="w-full" />
       </div>
       <div className="mt-6">
         <AnimatedButton
