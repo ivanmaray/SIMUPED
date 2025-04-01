@@ -158,7 +158,7 @@ export default function SimuPedApp() {
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-4">
         {/* Encabezado: Solo el logo centrado */}
-        <div className="flex flex-col items-center mb-2">
+        <div className="flex flex-col items-center mb-1">
           <img
             src="/images/simuped_logo.png"
             alt="SimuPed Logo"
