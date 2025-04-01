@@ -4,7 +4,7 @@ import AnimatedButton from './AnimatedButton';
 
 export default function SelectorModalidad({ onSelect }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-tr from-sky-100 to-blue-200 p-2">
+    <div className="flex flex-col items-center justify-center py-5 bg-gradient-to-tr from-sky-100 to-blue-200">
       <h1 className="text-4xl font-bold text-blue-900 mb-2">Selecciona la Modalidad</h1>
       <div className="flex space-x-4">
         <div className="flex flex-col items-center">
