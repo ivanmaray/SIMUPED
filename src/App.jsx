@@ -157,17 +157,18 @@ export default function SimuPedApp() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
-        {/* Encabezado con logo y botón para volver al selector de modalidad */}
-        <div className="flex justify-between items-start">
-          <div className="flex items-center space-x-3">
-            <img
-              src="/images/simuped_logo.png"
-              alt="SimuPed Logo"
-              className="w-12 h-12 object-contain"
-            />
-            <h1 className="text-4xl font-bold text-blue-900">SimuPed 🩺</h1>
-          </div>
-          {modalidad && (
+        {/* Encabezado: Solo el logo centrado */}
+        <div className="flex flex-col items-center">
+          <img
+            src="/images/simuped_logo.png"
+            alt="SimuPed Logo"
+            className="w-20 h-20 object-contain"
+          />
+        </div>
+
+        {/* Botón para volver al selector de modalidad, si ya se ha seleccionado */}
+        {modalidad && (
+          <div className="flex justify-end w-full">
             <button
               onClick={reiniciarModalidad}
               className="flex items-center text-sm text-blue-600 hover:underline focus:outline-none"
@@ -175,8 +176,8 @@ export default function SimuPedApp() {
               <ArrowLeftIcon className="w-4 h-4 mr-1" />
               Volver a seleccionar modalidad
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Si aún no se ha seleccionado la modalidad, mostramos el selector */}
         {!modalidad && <SelectorModalidad onSelect={seleccionarModalidad} />}
@@ -236,7 +237,7 @@ export default function SimuPedApp() {
                 <p className="text-lg">
                   Aquí se mostrará la simulación en directo, con comunicación en tiempo real.
                 </p>
-                {/* Puedes integrar aquí el video/gif de la modalidad en directo u otros componentes */}
+                {/* Aquí puedes integrar más componentes o lógica para el modo en directo */}
                 <AnimatedButton
                   onClick={() => setFase("final")}
                   className="mt-6 bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700"
