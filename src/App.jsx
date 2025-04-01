@@ -250,7 +250,7 @@ export default function SimuPedApp() {
         )}
       </div>
 
-      <footer className="text-center text-xs italic text-gray-500 mt-4 py-2 w-full">
+      <footer className="text-center text-s italic text-gray-500 mt-4 py-2 w-full">
         Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI
         Pediátrica de la AGC de la Infancia y Adolescencia del HUCA en contexto del proyecto
         FHARMACHALLENGE.
