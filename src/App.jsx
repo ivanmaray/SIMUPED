@@ -162,7 +162,7 @@ export default function SimuPedApp() {
           <img
             src="/images/simuped_logo.png"
             alt="SimuPed Logo"
-            className="w-40 h-40 object-contain"
+            className="w-70 h-70 object-contain"
           />
         </div>
 
