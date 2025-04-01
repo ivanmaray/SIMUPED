@@ -156,13 +156,13 @@ export default function SimuPedApp() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-tr from-sky-100 via-white to-blue-200 p-6">
-      <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-8 space-y-8">
+      <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl mx-auto p-4 space-y-4">
         {/* Encabezado: Solo el logo centrado */}
         <div className="flex flex-col items-center">
           <img
             src="/images/simuped_logo.png"
             alt="SimuPed Logo"
-            className="w-20 h-20 object-contain"
+            className="w-40 h-40 object-contain"
           />
         </div>
 
@@ -250,7 +250,7 @@ export default function SimuPedApp() {
         )}
       </div>
 
-      <footer className="text-center text-xs italic text-gray-500 mt-8 py-4 w-full">
+      <footer className="text-center text-xs italic text-gray-500 mt-4 py-2 w-full">
         Web desarrollada por el equipo SIMUPED constituido por la UGC de Farmacia y la UCI
         Pediátrica de la AGC de la Infancia y Adolescencia del HUCA en contexto del proyecto
         FHARMACHALLENGE.
