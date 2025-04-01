@@ -6,8 +6,8 @@ export default function SelectorModalidad({ onSelect }) {
   return (
     <div className="flex flex-col items-center justify-center py-5 bg-transparent">
       <h1 className="text-4xl font-bold text-blue-900 mb-4">Selecciona la Modalidad</h1>
-      <div className="flex space-x-8">
-        <div className="flex flex-col items-center space-y-4">
+      <div className="flex space-x-12">
+        <div className="flex flex-col items-center space-y-6">
           <h2 className="text-xl font-semibold">Simulación en Directo</h2>
           <AnimatedButton
             onClick={() => onSelect("directo")}
@@ -24,7 +24,7 @@ export default function SelectorModalidad({ onSelect }) {
             />
           </div>
         </div>
-        <div className="flex flex-col items-center space-y-4">
+        <div className="flex flex-col items-center space-y-6">
           <h2 className="text-xl font-semibold">Simulación Online</h2>
           <AnimatedButton
             onClick={() => onSelect("online")}
